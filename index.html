@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="同じGitHub Pages内の自作ツールデータを一括保存・復元するバックアップ管理ツール" />
+  <title>一括バックアップ管理</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="page-header">
+      <div>
+        <p class="badge">BACKUP CENTER</p>
+        <h1>一括バックアップ管理</h1>
+        <p class="description">リンク集と自作ツールのブラウザーデータを、1つのJSONファイルにまとめて保存・復元します。</p>
+      </div>
+      <a class="home-link" href="https://kentaro0810.github.io/">リンク集へ戻る</a>
+    </header>
+
+    <section class="summary-grid">
+      <article class="summary-card main-summary"><p>保存データ</p><strong id="keyCount">0件</strong><span>このブラウザーで見つかったキー</span></article>
+      <article class="summary-card"><p>推定ツール</p><strong id="toolCount">0個</strong><span>既知のツールデータ</span></article>
+      <article class="summary-card"><p>データ容量</p><strong id="dataSize">0 KB</strong><span>localStorageの概算</span></article>
+    </section>
+
+    <section class="notice-card">
+      <h2>このツールで扱うデータ</h2>
+      <p><code>kentaro0810.github.io</code>内で使われている<code>localStorage</code>を対象にします。パスワード入力値やログイン状態などの<code>sessionStorage</code>はバックアップしません。</p>
+    </section>
+
+    <section class="backup-card">
+      <div class="section-heading"><div><p class="section-kicker">EXPORT</p><h2>バックアップを書き出す</h2></div></div>
+      <div class="option-list">
+        <label><input id="includePortal" type="checkbox" checked /> リンク集のお気に入り・最近使った履歴を含める</label>
+        <label><input id="includeUnknown" type="checkbox" checked /> 未分類のlocalStorageデータも含める</label>
+      </div>
+      <div id="dataList" class="data-list"></div>
+      <button id="exportButton" class="primary-button wide" type="button">一括バックアップを書き出す</button>
+    </section>
+
+    <section class="restore-card">
+      <div class="section-heading"><div><p class="section-kicker">IMPORT</p><h2>バックアップを復元する</h2></div></div>
+      <label class="file-drop" for="importInput"><span>📦</span><strong>JSONバックアップを選択</strong><small>選択後、内容を確認してから復元します</small></label>
+      <input id="importInput" type="file" accept="application/json,.json" hidden />
+      <div id="previewPanel" class="preview-panel hidden">
+        <h3>読み込み内容</h3>
+        <div id="previewDetails"></div>
+        <div class="restore-options">
+          <label><input type="radio" name="restoreMode" value="merge" checked /> 追加・上書き（現在の他データは残す）</label>
+          <label><input type="radio" name="restoreMode" value="replace" /> 全置換（現在のlocalStorageを消して復元）</label>
+        </div>
+        <button id="restoreButton" class="primary-button wide" type="button">この内容を復元する</button>
+      </div>
+    </section>
+
+    <section class="danger-card">
+      <h2>データの初期化</h2>
+      <p>同じドメインの自作ツールが保存したlocalStorageをすべて削除します。先にバックアップしてください。</p>
+      <button id="clearAllButton" class="danger-button" type="button">localStorageをすべて削除</button>
+    </section>
+
+    <p id="statusMessage" class="status-message" aria-live="polite"></p>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
